@@ -1,16 +1,18 @@
-CREATE TABLE ndvi_data (
+CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    avg_ndvi DOUBLE,
-    season VARCHAR(20),
-    year INT,
-    area_id INT
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    api_token VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Load data from CSV
-LOAD DATA INFILE 'NDVI_processed4.csv'
-INTO TABLE ndvi_data
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(avg_ndvi, season, year, area_id);
+CREATE TABLE bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    from_city VARCHAR(100) NOT NULL,
+    to_city VARCHAR(100) NOT NULL,
+    schedule_time DATETIME NOT NULL,
+    booking_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
